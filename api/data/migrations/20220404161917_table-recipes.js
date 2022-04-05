@@ -17,7 +17,7 @@ exports.up = async (knex) => {
           .notNullable();
         tbl.decimal('quantity')
       })
-      .createTable('instructions', tbl => {
+      .createTable('instructions', tbl => { //
         tbl.increments('instruction_id')
         tbl.text('instruction_text', 128).notNullable()
         tbl.float('step_number')
@@ -29,7 +29,7 @@ exports.up = async (knex) => {
           .onDelete('RESTRICT')
           .onUpdate('RESTRICT')
     })
-    .createTable('ingredients_instructions', tbl => {
+    .createTable('ingredients_instructions', tbl => { ///
         tbl.increments('ingredients_instruction_id')
         tbl.integer('ingredient_id')
           .unsigned()
