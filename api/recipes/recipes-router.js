@@ -1,10 +1,11 @@
 const express = require('express')
 const Recipes = require('../recipes/recipes-model')
+const {restricted} = require('../auth/auth-middleware')
 
 const router = express.Router()
 
 
-router.get('/', (req, res, next) => {
+router.get('/', restricted ,(req, res, next) => {
     Recipes.getAll()
         .then((recipe) => {
         res.status(200).json(recipe)
