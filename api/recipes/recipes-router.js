@@ -13,7 +13,7 @@ router.get('/', restricted ,(req, res, next) => {
         .catch(next)
 })
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', restricted,(req, res, next) => {
     Recipes.getById(req.params.recipe_id)
         .then(recipe => {
             res.json(recipe)

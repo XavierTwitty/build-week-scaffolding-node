@@ -2,7 +2,11 @@ const db = require('../data/db-config')
 
 function getAllUsers() { return db('users') }
 
-function getBy(key, value) { return db('users').where({[key]: value}).first() }
+function findby(filter) {
+  return db('users as u')
+    .select('u.user_id', 'u.username', 'u.password')
+    .where(filter)
+}
 
 
 async function insertUser(user) {
@@ -15,5 +19,5 @@ async function insertUser(user) {
 module.exports = {
     getAllUsers,
     insertUser,
-    getBy,
+    findby
 }

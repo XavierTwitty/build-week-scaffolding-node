@@ -3,7 +3,6 @@ const {JWT_SECRET} = require('../secrets')
 const bcrypt = require('bcryptjs')
 const {BCRYPT_ROUNDS} = require('../secrets')
 const User = require('../users/users-model')
-const makeToken = require('./token-builder')
 
 const restricted = (req, res, next) => {
 
@@ -39,18 +38,17 @@ const restricted = (req, res, next) => {
       }
   }
 
-  const checkLogin = (req, res, next) => {
-    const {username , password} =  req.body
-    if(!username || !password){
-        next({status: 401, message:"username and password required"})
-    } else {
-        User.getBy('username', username)
-            .then(user => {
-                if(user && bcrypt.compareSync(password, user.password)){
-                    const token = makeToken(req.user)
-                    req.token = token 
-                }
-            })
+  const checkLogin = async (req, res, next) => {
+    try {
+        const [user] = await User.findby({username: req.body.username})
+        if(!user) {
+            next({status: 401, message:"Invalid credentials"})
+        } else {
+            req.user = user
+            next()  
+        }
+    } catch (err) {
+        next(err)
     }
   }
 
